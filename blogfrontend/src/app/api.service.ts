@@ -1,0 +1,67 @@
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { catchError, tap, map } from 'rxjs/operators';
+import { Article } from './article';
+import { url } from 'inspector';
+
+
+const httpOptions = {
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
+}
+const apiUrl = 'http://localhost:3000/api/article';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  constructor(private http: HttpClient) { }
+
+  getArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(apiUrl)
+      .pipe(
+        tap(article => console.log('fetched articles')),
+        catchError(this.handleError('getArticles', []))
+      );
+  }
+
+  getArticle(id: any): Observable<Article> {
+    const url = `${apiUrl}/${id}`;
+    console.log(url);
+    return this.http.get<Article>(url).pipe(
+      tap(_ => console.log(`fetched article id=${id}`)),
+      catchError(this.handleError<Article>(`getArticle id=${id}`))
+    );
+  }
+
+  addArticle(article: Article): Observable<Article> {
+    return this.http.post<Article>(apiUrl, article, httpOptions).pipe(
+      tap((art: Article) => console.log(`added article w/ id=${art._id}`)),
+      catchError(this.handleError<Article>('addArticle'))
+    );
+  }
+
+  updateArticle(id: any, article: Article): Observable<any> {
+    const url = `${apiUrl}/${id}`;
+    return this.http.put(url, article, httpOptions).pipe(
+      tap(_ => console.log(`updated article id=${id}`)),
+      catchError(this.handleError<any>('updateArticle'))
+    );
+  }
+
+  deleteArticle(id : any){
+    const url = `${apiUrl}/${id}`
+    return this.http.delete(url,httpOptions).pipe(
+      tap(_ => console.log(`delete article id=${id}`)),
+      catchError(this.handleError<any>('deleteArticle'))
+    );
+  }
+
+  private handleError<T>(operation = 'operation', result?:T) {
+    return (error:any): Observable<T> => {
+      console.log(error);
+      return of(result as T);
+    }
+  }
+}
