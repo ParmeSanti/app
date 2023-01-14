@@ -41,6 +41,21 @@
                             content</span>
                     </mat-error>
                 </mat-form-field>
+
+                <!-- new comment field -->
+                <br>
+                <mat-form-field class="example-full-width">
+                    <label for="comment">Text:</label>
+                    <input matInput placeholder="Comment" name="comment" formControlName="title" [errorStateMatcher]="matcher">
+                    <label for="raiting">Bewertung 1-5:</label>
+                    <input matInput placeholder="Raiting" name="raiting" type="number" min="1" max="5"formControlName="title" [errorStateMatcher]="matcher">
+                    <mat-error>
+                        <span *ngIf="!articleForm.get('title')?.valid && articleForm.get('title')?.touched">Please enter
+                            Title</span>
+                    </mat-error>
+                </mat-form-field>
+
+
                 <div class="button-row">
                     <button type="submit" [disabled]="!articleForm.valid" mat-flat-button
                         color="primary"><mat-icon>save</mat-icon></button>
