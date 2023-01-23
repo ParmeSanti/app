@@ -1,15 +1,10 @@
 export class Article {
-  _id!: string;
-  title!: string;
-  author!: string;
-  description!: string;
-  content!: string;
-  updatedAt!: Date;
-  // added comments
-  comments!: [
-    {
-      text: string;
-      rating: number;
-    }
-  ];
+    _id!: string;
+    title!: string;
+    author!: string;
+    description!: string;
+    content!: string;
+    comments!:Array<string>;
+    bewertung!:Array<string>;
+    updatedAt!: Date;
 }

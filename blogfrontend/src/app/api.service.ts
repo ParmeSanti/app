@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError, tap, map } from 'rxjs/operators';
 import { Article } from './article';
 import { url } from 'inspector';
+import { stringify } from 'querystring';
 
 
 const httpOptions = {
@@ -47,6 +48,20 @@ export class ApiService {
     return this.http.put(url, article, httpOptions).pipe(
       tap(_ => console.log(`updated article id=${id}`)),
       catchError(this.handleError<any>('updateArticle'))
+    );
+  }
+
+  updateComments(id: any, articleNew: Article,articleOld:Article): Observable<any> {
+    const url = `${apiUrl}/${id}`;
+    let x= '';
+    for(let i = 0;i < articleNew.comments.length;i++){
+      x += articleNew.comments[i];
+    }
+    articleOld.comments.push(x);
+    articleOld.bewertung.push(articleNew.bewertung[0]);
+    return this.http.put(url, articleOld, httpOptions).pipe(
+      tap(_ => console.log(`updated comments id=${id}`)),
+      catchError(this.handleError<any>('updateComments'))
     );
   }
 

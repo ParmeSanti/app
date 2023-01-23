@@ -5,5 +5,7 @@ export const ArticleSchema = new mongoose.Schema({
  author: { type: String, required: true },
  description: { type: String, required: true },
  content: { type: String, required: true },
- updatedAt: { type: Date, default: Date.now },
+ comments: {type: Array<String>,required:false},
+ bewertung: {type: Array<String>,required:false},
+ updatedAt: { type: Date, default: Date.now }
 });
